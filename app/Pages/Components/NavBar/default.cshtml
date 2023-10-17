@@ -1,0 +1,55 @@
+﻿@model User
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Web Page</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" asp-page="./Index">Home</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                @if (Model == null)
+                {
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-page="./Login">Login</a>
+                        </li>
+                    </ul>
+                }
+                else 
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">AP @Model.ActionPoints</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Money @Model.Money</a>
+                    </li>
+                    @if (@Model.Type == UserType.Admin)
+                    {
+                    <li class="nav-item">
+                        <div class="nav-link text-warning">Welcome @Model.Login</div>
+                    </li>
+                    }
+                    else 
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Welcome @Model.Login</a>
+                    </li>
+                    }
+                    <li class="nav-item">
+                        <form asp-page-handler="logout" method="post">
+                            <button class="nav-link">Logout</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>

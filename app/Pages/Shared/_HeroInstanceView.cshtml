@@ -1,0 +1,31 @@
+﻿@using app.Utils;
+@model HeroInstanceFullInfo
+@{
+    Layout = "";
+}
+
+
+@{
+    string hpPercent = Model.GetHPPercent().ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+    string mpPercent = Model.GetMPPercent().ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+}
+
+<div class="HeroView">
+    <div class="HeroView-Type">
+        <div class="HeroView-Type Border-Bottom">
+            Class: @Model.Class.ToString()
+        </div>
+        <div class="HeroView-Type Border-Bottom Step">
+            Name: @Model.Name
+        </div>
+    </div>
+    <div>
+        Stats
+        <div class="Border">
+            <div class="HPBar" style="width:@hpPercent%">@Model.CurrentHP/@Model.MaxHP</div>
+        </div>
+        <div class="Border">
+            <div class="MPBar" style="width:@mpPercent%">@Model.CurrentMP/@Model.MaxMP</div>
+        </div>
+    </div>
+</div>

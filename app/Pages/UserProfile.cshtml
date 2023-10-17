@@ -1,0 +1,10 @@
+﻿@page "/Profile"
+@model app.Pages.UserProfileModel
+
+<div>
+    Name: @Model.CurrentUser.Login
+    Email: @Model.CurrentUser.Email
+    Type: @Model.CurrentUser.Type
+    Money: @Model.CurrentUser.Money
+    Action Points: @Model.CurrentUser.ActionPoints
+</div>

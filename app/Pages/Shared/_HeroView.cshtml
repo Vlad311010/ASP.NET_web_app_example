@@ -1,0 +1,30 @@
+﻿@using app.Utils;
+@model Hero
+@{
+    Layout = "";
+}
+
+
+<div class="HeroView">
+    <div class="HeroView-Type">
+        <div class="HeroView-Type Border-Bottom">
+            Class: @Model.Class.ToString()
+        </div>
+        <div class="HeroView-Type Border-Bottom Step">
+            Name: @Model.Name
+        </div>
+    </div>
+    <div>
+        Stats
+        <div class="Border">
+            <div class="HPBar"> 
+                @Model.MaxHP
+            </div>
+        </div>
+        <div class="Border">
+            <div class="MPBar">
+                @Model.MaxMP
+            </div>
+        </div>
+    </div>
+</div>

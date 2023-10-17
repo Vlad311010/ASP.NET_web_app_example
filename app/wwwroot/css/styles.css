@@ -1,0 +1,45 @@
+.Border {
+    border: solid 2px;
+    margin: 2px;
+}
+
+.Border-Topless {
+    border: solid 2px;
+    border-top: none;
+    margin: 2px;
+}
+
+.Border-Bottom {
+    border: solid 2px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.Step {
+    margin-left: 5px;
+}
+
+.HeroView {
+    border: double 5px;
+    border-radius: 3px 4px;
+    padding: 10px;
+    margin: 5px;
+    width: 13vw;
+}
+
+.HeroView-Type {
+    display: flex;
+}
+
+.HPBar {
+    color: black;
+    background-color: red;
+    text-align: center;
+}
+
+.MPBar {
+    color: black;
+    background-color: blue;
+    text-align: center;
+}

@@ -1,0 +1,10 @@
+﻿@page "/Heroes"
+@model app.Pages.HeroesModel
+
+
+<ul>
+    @foreach (Hero hero in Model.Heroes)
+    {
+        <li><partial name="_HeroView" model="hero" /></li>
+    }
+</ul>
