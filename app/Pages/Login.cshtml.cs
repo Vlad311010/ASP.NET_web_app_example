@@ -35,7 +35,7 @@ namespace app.Pages
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, user.Login == "Admin" ? "Admin" : "Player"),
+                new Claim(ClaimTypes.Role, user.Type == UserType.Admin? "Admin" : "Player"),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

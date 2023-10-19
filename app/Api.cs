@@ -39,20 +39,33 @@ namespace app
             app.MapGet("api/users/{userId}", (int userId, IUserRepository db) =>
             {
                 User? user = db.GetById(userId);
-                return Results.Ok(user);
+                return user != null ? Results.Ok(user) : Results.NotFound();
+            }).RequireAuthorization("AdminOnly");
+
+            app.MapGet("api/users/{login}", (string login, IUserRepository db) =>
+            {
+                User? user = db.GetByLogin(login);
+                return user != null ? Results.Ok(user) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
 
             app.MapGet("api/users/create", ([FromBody]User user, IUserRepository db) =>
             {
                 User? newUser = db.Add(user);
-                if (newUser != null)
-                    return Results.Ok(newUser);
-                else 
-                    return Results.BadRequest();
+                return newUser != null ? Results.Ok(newUser) : Results.BadRequest();
             }).RequireAuthorization("AdminOnly");
 
+            app.MapGet("api/users/update", ([FromBody] User user, IUserRepository db) =>
+            {
+                User? updatedUser = db.Update(user);
+                return updatedUser != null ? Results.Ok(updatedUser) : Results.NotFound();
+            }).RequireAuthorization("AdminOnly");
 
+            app.MapGet("api/users/remove/{login}", ([FromRoute] string login, IUserRepository db) =>
+            {
+                User? user = db.Remove(login);
+                return user != null ? Results.Ok(user) : Results.NotFound();
+            }).RequireAuthorization("AdminOnly");
         }
     }
 }
