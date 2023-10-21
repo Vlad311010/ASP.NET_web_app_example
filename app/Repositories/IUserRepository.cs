@@ -10,6 +10,6 @@ namespace app.Repositories
         User? GetById(int id);
         User? Add(User user);
         User? Update(User user);
-        User? Remove(string login);
+        User? Remove(int id);
     }
 }

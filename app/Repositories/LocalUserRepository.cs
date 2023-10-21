@@ -58,17 +58,20 @@ namespace app.Repositories
 
         public User? Authenticate(string login, string password)
         {
+            LoadData();
             User? user = _users.SingleOrDefault(x => x.Login == login && x.Password == password);
             return user;
         }
 
         public User? GetByLogin(string login)
         {
+            LoadData();
             return _users.FirstOrDefault(x => x.Login == login);
         }
 
         public User? GetById(int id)
         {
+            LoadData();
             return _users.FirstOrDefault(x => x.Id == id);
         }
 
@@ -104,11 +107,11 @@ namespace app.Repositories
             return _users[index];
         }
 
-        public User? Remove(string login)
+        public User? Remove(int id)
         {
             LoadData();
 
-            User? user = GetByLogin(login);
+            User? user = GetById(id);
             _users.Remove(user);
             SaveData();
             return user;

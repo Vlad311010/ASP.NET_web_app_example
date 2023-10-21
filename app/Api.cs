@@ -11,23 +11,25 @@ namespace app
     {
         internal static void MapApi(WebApplication app)
         {
-            app.MapGet("api/admin", async (HttpContext ctx) =>
-            {
-                var claims = new List<Claim>
+            if (app.Environment.IsDevelopment()) {
+                app.MapGet("api/admin", async (HttpContext ctx) =>
                 {
+                    var claims = new List<Claim>
+                    {
                     new Claim(ClaimTypes.Name, "Admin"),
                     new Claim(ClaimTypes.Role, "Admin")
-                };
+                    };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                    };
 
-                await ctx.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                return Results.Ok();
-            });
+                    await ctx.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                    return Results.Ok();
+                });
+            }
 
 
             app.MapGet("api/users", (IUserRepository db) =>
@@ -36,36 +38,43 @@ namespace app
                 return Results.Ok(users);
             }).RequireAuthorization("AdminOnly");
 
-            app.MapGet("api/users/{userId}", (int userId, IUserRepository db) =>
+            app.MapGet("api/users/{userId}", ([FromRoute] int userId, IUserRepository db) =>
             {
                 User? user = db.GetById(userId);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapGet("api/users/{login}", (string login, IUserRepository db) =>
-            {
-                User? user = db.GetByLogin(login);
-                return user != null ? Results.Ok(user) : Results.NotFound();
-            }).RequireAuthorization("AdminOnly");
-
-
-            app.MapGet("api/users/create", ([FromBody]User user, IUserRepository db) =>
+            app.MapPost("api/users/create", ([FromBody] User user, IUserRepository db) =>
             {
                 User? newUser = db.Add(user);
                 return newUser != null ? Results.Ok(newUser) : Results.BadRequest();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapGet("api/users/update", ([FromBody] User user, IUserRepository db) =>
+            app.MapPost("api/users/update", ([FromBody] User user, IUserRepository db) =>
             {
                 User? updatedUser = db.Update(user);
                 return updatedUser != null ? Results.Ok(updatedUser) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapGet("api/users/remove/{login}", ([FromRoute] string login, IUserRepository db) =>
+            app.MapDelete("api/users/remove/{userId}", ([FromRoute] int userId, IUserRepository db) =>
             {
-                User? user = db.Remove(login);
+                User? user = db.Remove(userId);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
+
+            app.MapPost("api/users/giveAdminPrivilege/{login}", ([FromRoute] string login, IUserRepository db) =>
+            {
+                User? user = db.GetByLogin(login);
+                if (user == null) 
+                    return Results.NotFound();
+                
+                user.Type = UserType.Admin;
+                User? updatedUser = db.Update(user);
+                return Results.Ok(updatedUser);
+            }).RequireAuthorization("AdminOnly");
+
+            app.MapGet("api/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
+                string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)));
         }
     }
 }
