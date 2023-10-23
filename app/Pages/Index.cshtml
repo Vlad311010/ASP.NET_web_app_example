@@ -3,9 +3,37 @@
 @using app.Utils;
 @model app.Pages.IndexModel
 
-<h2> Welcome page Title </h2>
 
-<div> Welcome page text </div>
+<body style="background-image:url('/images/indexPageBackground.jpg')">
+<div class="px-4 py-5 my-5 text-center text-white">
+    <h1 class="display-5 fw-bold">Welcome page Title</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Welcome page text. Lorem ipsum dolor sit amet, 
+            consectetur adipiscing elit. Maecenas nisi ipsum, placerat ac dictum at, tristique eget dolor.
+            Nam dolor risus, elementum sit amet ultrices vel, egestas vel metus. Sed dapibus tincidunt lacus, vitae aliquet erat rutrum eu.
+            Nulla quis massa lectus. Suspendisse euismod lacus eros, in porttitor nulla iaculis ac. Proin aliquet tortor ac vulputate tempus.
+            Nulla sollicitudin aliquam diam vel tristique. Morbi vitae condimentum sem, quis molestie orci. Fusce aliquet laoreet ligula. In in diam ut lectus pulvinar cursus cursus non nibh.
+        </p>
 
-<a asp-page="./Users">Users</a>
-<a asp-page="./Heroes">Heroes</a>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-page="./Login" class=" btn btn-primary btn-lg px-4 gap-3">Login</a>
+                <a asp-page="./Register" class="btn btn-secondary btn-lg px-4">Create Account</a>
+            </div>
+        }
+        else
+        {
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-page="./Game" class=" btn btn-primary btn-lg px-4 gap-3">Play</a>
+                <a asp-page="./Heroes" asp-route-userName="@Model.userName" class=" btn btn-primary btn-lg px-4 gap-3">Heroes</a>
+                <a asp-page="./Shop" class="btn btn-warning btn-lg px-4">Shop</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-page="./Users" class="btn btn-dark btn-lg px-4">Players list</a>
+                }
+            </div>
+        }
+        </div>
+</div>
+</body>

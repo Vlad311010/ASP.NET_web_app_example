@@ -2,7 +2,7 @@
 
 namespace app.Repositories
 {
-    public class LocalHeroInstanceRepository : IHeroInstance
+    public class LocalHeroInstanceRepository : IHeroInstanceRepository
     {
         public IEnumerable<HeroInstance> All => new List<HeroInstance>()
         {

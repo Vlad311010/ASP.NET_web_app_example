@@ -3,8 +3,8 @@
 
 
 <ul>
-    @foreach (Hero hero in Model.Heroes)
+    @foreach (HeroInstanceFullInfo hero in Model.OwnedHeroes)
     {
-        <li><partial name="_HeroView" model="hero" /></li>
+        <li><partial name="_HeroInstanceView" model="hero" /></li>
     }
 </ul>

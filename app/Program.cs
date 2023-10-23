@@ -51,7 +51,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSingleton<IUserRepository, LocalUserRepository>();
 builder.Services.AddSingleton<IHeroRepository, LocalHeroRepository>();
-builder.Services.AddSingleton<IHeroInstance, LocalHeroInstanceRepository>();
+builder.Services.AddSingleton<IHeroInstanceRepository, LocalHeroInstanceRepository>();
 
 var app = builder.Build();
 

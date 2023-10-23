@@ -2,7 +2,7 @@
 
 namespace app.Repositories
 {
-    public interface IHeroInstance
+    public interface IHeroInstanceRepository
     {
         IEnumerable<HeroInstance> All { get; }
 

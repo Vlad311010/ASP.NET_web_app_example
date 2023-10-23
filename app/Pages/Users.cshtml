@@ -11,7 +11,6 @@
             @foreach (HeroInstance instance in Model.Instances.Where(m => m.OwnerId == user.Id))
             {
                 var hero = Model.GetHero(instance.HeroId);
-                // var instance = Model.GetHeroInstance(contract);
                 var heroInfo = new HeroInstanceFullInfo(hero, instance);
 
                 <li><partial name="_HeroInstanceView" model="heroInfo" /></li>

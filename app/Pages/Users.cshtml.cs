@@ -9,9 +9,9 @@ namespace app.Pages
     {
         private readonly IUserRepository _userRepo;
         private readonly IHeroRepository _heroRepo;
-        private readonly IHeroInstance _heroInstanceRepo;
+        private readonly IHeroInstanceRepository _heroInstanceRepo;
 
-        public UsersListModel(IUserRepository userRepo, IHeroRepository heroRepo, IHeroInstance contractRepo)
+        public UsersListModel(IUserRepository userRepo, IHeroRepository heroRepo, IHeroInstanceRepository contractRepo)
         {
             _userRepo = userRepo;
             _heroRepo = heroRepo;
