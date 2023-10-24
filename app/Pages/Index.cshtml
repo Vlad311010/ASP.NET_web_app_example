@@ -1,10 +1,13 @@
 ﻿@page "/"
-@using System.Security.Claims;
 @using app.Utils;
 @model app.Pages.IndexModel
 
+<style>
+    body {
+        background-image: url(images/indexPageBackground.jpg) !important
+    }
+</style>
 
-<body style="background-image:url('/images/indexPageBackground.jpg')">
 <div class="px-4 py-5 my-5 text-center text-white">
     <h1 class="display-5 fw-bold">Welcome page Title</h1>
     <div class="col-lg-6 mx-auto">
@@ -34,6 +37,5 @@
                 }
             </div>
         }
-        </div>
+    </div>
 </div>
-</body>

@@ -1,0 +1,19 @@
+﻿@page "/Shop"
+@model app.Pages.ShopModel
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <partial name="_ShopItemView" model='new ShopItem() { Name = "AAA"}'/>
+            <partial name="_ShopItemView" model='new ShopItem() { Name = "BBB"}' view-data="new ViewDataDictionary(ViewData)" />
+            @await Html.PartialAsync(
+                "_ShopItemView",
+                new ShopItem() { Name = "CCC"}, 
+                new ViewDataDictionary(ViewData)
+                {
+                    { "var2", "index" }
+                })
+        </div>
+    </div>
+</div>

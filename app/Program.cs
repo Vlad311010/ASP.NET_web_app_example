@@ -1,12 +1,8 @@
 using app;
 using app.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions => {
