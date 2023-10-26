@@ -26,21 +26,10 @@
                     </div>
                 </div>
             </div>
-            @foreach (ShopItem item in Model.Items)
+            @foreach (Item item in Model.Items)
             {
                 <partial name="_ShopItemView" model="item"/>
             }
-            @*
-            <partial name="_ShopItemView" model='new ShopItem() { Name = "AAA"}'/>
-            <partial name="_ShopItemView" model='new ShopItem() { Name = "BBB"}' view-data="new ViewDataDictionary(ViewData)" />
-            @await Html.PartialAsync(
-                "_ShopItemView",
-                new ShopItem() { Name = "CCC"}, 
-                new ViewDataDictionary(ViewData)
-                {
-                    { "var2", "index" }
-                })
-            *@
         </div>
     </div>
 </div>

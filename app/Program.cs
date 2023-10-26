@@ -1,6 +1,7 @@
 using app;
 using app.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,10 +46,15 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-builder.Services.AddSingleton<IUserRepository, LocalUserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IHeroRepository, LocalHeroRepository>();
 builder.Services.AddSingleton<IHeroInstanceRepository, LocalHeroInstanceRepository>();
 builder.Services.AddSingleton<IShopItemRepository, LocalShopItemRepository>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AppDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
+);
+
 
 var app = builder.Build();
 

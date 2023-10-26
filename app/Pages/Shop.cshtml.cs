@@ -19,7 +19,7 @@ namespace app.Pages
         public User? User { get; set; }
         
         [BindProperty]
-        public List<ShopItem> Items { get; set; }
+        public List<Item> Items { get; set; }
 
         public void OnGet()
         {
@@ -35,6 +35,11 @@ namespace app.Pages
             User.Money -= 250;
             User.ActionPoints += 5;
             _userRepo.Update(User);
+        }
+
+        public void OnPostBuyItem(int itemId)
+        {
+
         }
     }
 }

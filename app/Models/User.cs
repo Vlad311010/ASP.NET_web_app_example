@@ -1,11 +1,17 @@
-﻿namespace app.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace app.Models
 {
     public class User
     {
         // user data
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Please enter your login"), MaxLength(50)]
         public string Login { get; set; }
         public string Password { get; set; }
+        
+        [Required(ErrorMessage = "Please enter your email"), MaxLength(255)]
         public string Email { get; set; }
         public UserType Type { get; set; }
         

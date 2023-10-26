@@ -1,5 +1,10 @@
-﻿namespace app.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
+namespace app.Models
 {
+    [PrimaryKey("OwnerId", "HeroId")]
     public class HeroInstance
     {
         public int OwnerId { get; set; }
