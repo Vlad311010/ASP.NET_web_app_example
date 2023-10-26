@@ -100,7 +100,7 @@ namespace app.Repositories
             if (index == -1 || !ValidateUser(user, false)) 
                 return null;
 
-            int id = user.Id;
+            int id = _users[index].Id;
             _users[index] = user;
             _users[index].Id = id;
             SaveData();

@@ -48,6 +48,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IUserRepository, LocalUserRepository>();
 builder.Services.AddSingleton<IHeroRepository, LocalHeroRepository>();
 builder.Services.AddSingleton<IHeroInstanceRepository, LocalHeroInstanceRepository>();
+builder.Services.AddSingleton<IShopItemRepository, LocalShopItemRepository>();
 
 var app = builder.Build();
 

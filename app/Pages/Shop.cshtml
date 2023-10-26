@@ -2,9 +2,35 @@
 @model app.Pages.ShopModel
 
 
-<div class="album py-5 bg-light">
+<div class="album py-5">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>AP</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                        <image href="/images/icon.png" width="100%" height="100%" />
+                    </svg>
+                    <div class="card-body">
+                        <h4>AP</h4>
+                        <p class="card-text">Recieve 5 AP.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <form asp-page-handler="AP" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Buy</button>
+                                </form>
+                            </div>
+                            <small class="text-muted">250$</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @foreach (ShopItem item in Model.Items)
+            {
+                <partial name="_ShopItemView" model="item"/>
+            }
+            @*
             <partial name="_ShopItemView" model='new ShopItem() { Name = "AAA"}'/>
             <partial name="_ShopItemView" model='new ShopItem() { Name = "BBB"}' view-data="new ViewDataDictionary(ViewData)" />
             @await Html.PartialAsync(
@@ -14,6 +40,7 @@
                 {
                     { "var2", "index" }
                 })
+            *@
         </div>
     </div>
 </div>
