@@ -32,13 +32,21 @@ namespace app.Pages
 
             string login = HttpContext.User.GetLogin();
             User = _userRepo.GetByLogin(login);
-            User.Money -= 250;
+            User.Money = -250;
             User.ActionPoints += 5;
             _userRepo.Update(User);
         }
 
         public void OnPostBuyItem(int itemId)
         {
+            Items = _shopItemRepo.All.ToList();
+
+            string login = HttpContext.User.GetLogin();
+            User = _userRepo.GetByLogin(login);
+
+            Item item = _shopItemRepo.Get(itemId);
+            User.Money -= item.Price;
+
 
         }
     }

@@ -15,7 +15,7 @@ namespace app.Repositories
 
         public HeroInstance Get(int userId, int heroId)
         {
-            return _context.HeroInstances.Where(m => m.OwnerId == userId && m.HeroId == userId).SingleOrDefault();
+            return _context.HeroInstances.Where(m => m.OwnerId == userId && m.Hero.Id == userId).SingleOrDefault();
         }
     }
 }

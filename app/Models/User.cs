@@ -15,6 +15,9 @@ namespace app.Models
         public string Email { get; set; }
         public UserType Type { get; set; }
         
+        // f keys
+        public virtual ICollection<HeroInstance> OwnedHeroes { get; } = new List<HeroInstance>();
+
         // player data
         public int Money { get; set; }
         public int Score { get; set; }

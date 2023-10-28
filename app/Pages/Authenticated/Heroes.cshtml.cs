@@ -31,7 +31,7 @@ namespace app.Pages
 
         private Hero GetHeroFromInstance(HeroInstance instance)
         {
-            return _heroRepo.Get(instance.HeroId);
+            return _heroRepo.Get(instance.Hero.Id);
         }
     }
 }
