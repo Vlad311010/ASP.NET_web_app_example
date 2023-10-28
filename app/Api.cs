@@ -7,8 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace app
 {
+    
+
     public static class Api
     {
+        private class LoginRequest
+        {
+            public string Login { get; set; }
+            public string Password { get; set; }
+        }
+
         internal static void MapApi(WebApplication app)
         {
             if (app.Environment.IsDevelopment()) {
@@ -31,6 +39,32 @@ namespace app
                 });
             }
 
+            app.MapPost("api/login", async (HttpContext ctx, IUserRepository db, [FromBody] LoginRequest loginRequest) =>
+            {
+                User? user = db.Authenticate(loginRequest.Login, loginRequest.Password);
+
+                if (user == null)
+                {
+                    Results.Text("Invalid login or password");
+                    return Results.StatusCode(401);
+                }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Role, user.Type == UserType.Admin? "Admin" : "Player"),
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                };
+
+                await ctx.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                return Results.Ok();
+            });
 
             app.MapGet("api/users", (IUserRepository db) =>
             {
