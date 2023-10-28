@@ -7,5 +7,6 @@ namespace app.Models
     {     
         public int OwnerId { get; set; }
         public int ItemId { get; set; }
+        public int Amount { get; set; }
     }
 }

@@ -33,14 +33,23 @@
 }
 
 .HPBar {
-    color: white;
     background-color: red;
-    text-align: center;
+    height: 1.2em
 }
 
 .MPBar {
-    color: white;
     background-color: blue;
+    height: 1.2em
+}
+
+.BarText {
+    position: relative;
+    bottom: 1.4em;
+    color: white;
     text-align: center;
+}
+
+body {
+    background-image: url(/images/background.png);
 }
 

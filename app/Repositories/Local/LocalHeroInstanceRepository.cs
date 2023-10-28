@@ -13,7 +13,7 @@ namespace app.Repositories
 
         public HeroInstance Get(int userId, int id)
         {
-            return All.Where(m => m.OwnerId == userId && m.HeroId == id).Single();
+            return All.Where(m => m.OwnerId == userId && m.HeroId == id).SingleOrDefault();
         }
     }
 }

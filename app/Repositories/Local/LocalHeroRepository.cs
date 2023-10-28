@@ -1,6 +1,4 @@
 ﻿using app.Models;
-using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace app.Repositories
 {
@@ -14,6 +12,6 @@ namespace app.Repositories
 
         public IEnumerable<Hero> All => _heroes;
 
-        public Hero Get(int id) { return _heroes.Where(m => m.Id == id).First(); }
+        public Hero? Get(int id) { return _heroes.Where(m => m.Id == id).SingleOrDefault(); }
     }
 }

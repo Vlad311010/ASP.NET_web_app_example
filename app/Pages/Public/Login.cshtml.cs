@@ -49,7 +49,7 @@ namespace app.Pages
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
             // success
-            return LocalRedirect(Url.Page("/Index"));
+            return LocalRedirect(Url.Page("/Public/Index"));
         }
     }
 }

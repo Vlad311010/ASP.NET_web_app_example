@@ -1,13 +1,18 @@
-﻿namespace app.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace app.Models
 {
     public class Item
     {
         public int Id { get; set; }
+        
+        [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Image { get; set; }
+        public string? Description { get; set; }
+        public string? Image { get; set; }
+
+        [Required]
+        [Range(0,99999)]
         public int Price { get; set; }
-        public string Page { get; set; }
-        public string Handler { get; set; }
     }
 }

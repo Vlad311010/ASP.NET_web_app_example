@@ -1,9 +1,5 @@
 ﻿@using app.Utils;
 @model HeroInstanceFullInfo
-@{
-    Layout = "";
-}
-
 
 @{
     string hpPercent = Model.GetHPPercent().ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
@@ -21,11 +17,13 @@
     </div>
     <div>
         Stats
-        <div class="Border">
-            <div class="HPBar" style="width:@hpPercent%">@Model.CurrentHP/@Model.MaxHP</div>
+        <div style="height:1.4em" class="Border">
+            <div class="HPBar" style="width:@hpPercent%;height:1.2em"></div>
+            <div class="BarText">@Model.CurrentHP/@Model.MaxHP</div>
         </div>
-        <div class="Border">
-            <div class="MPBar" style="width:@mpPercent%">@Model.CurrentMP/@Model.MaxMP</div>
+        <div style="height:1.4em" class="Border">
+            <div class="MPBar" style="width:@mpPercent%;height:1.2em"></div>
+            <div class="BarText">@Model.CurrentMP/@Model.MaxMP</div>
         </div>
     </div>
 </div>

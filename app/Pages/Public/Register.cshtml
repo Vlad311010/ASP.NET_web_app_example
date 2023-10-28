@@ -13,7 +13,7 @@
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
                 <div class="form-floating">
-                    <input type="text" class="form-control @(Model.WrongLogin ? "bg-danger-subtle" : "")" id="floatingLogin" placeholder="user123" name="Login">
+                    <input type="text" class="form-control @(Model.WrongLogin ? "bg-danger-subtle" : "")" id="floatingLogin" placeholder="user123" name="Login" autofocus>
                     <label for="floatingLogin">Login</label>
                 </div>
                 <div class="my-1 form-floating">
@@ -30,7 +30,7 @@
                 </div>
 
                 <button class="my-3 btn btn-primary w-100 py-2" type="submit">Register</button>
-                <a asp-page="./" class="my-2 btn btn-secondary w-100 py-2">Home</a>
+                <a asp-page="/Public/Index" class="my-2 btn btn-secondary w-100 py-2">Home</a>
             </form>
         </main>
     </div>

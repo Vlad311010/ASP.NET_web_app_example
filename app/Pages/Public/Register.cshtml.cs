@@ -45,7 +45,7 @@ namespace app.Pages
 
             _usersRepo.Add(user);
             
-            return LocalRedirect(Url.Page("/Login"));
+            return LocalRedirect(Url.Page("/Public/Login"));
         }
     }
 }

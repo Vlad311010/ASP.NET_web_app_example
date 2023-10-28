@@ -30,12 +30,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddRazorPages(options =>
 {
     // Autorization access
-    options.Conventions.AuthorizeFolder("/")
+    /*options.Conventions.AuthorizeFolder("/")
     .AllowAnonymousToPage("/Login")
     .AllowAnonymousToPage("/Index")
     .AllowAnonymousToPage("/Register");
     // Admin Only
-    options.Conventions.AuthorizePage("/Users", "AdminOnly");
+    options.Conventions.AuthorizePage("/Users", "AdminOnly");*/
+    options.Conventions.AllowAnonymousToFolder("/Public");
+    options.Conventions.AuthorizeFolder("/Authenticated");
+    
+    // Admin Only
+    options.Conventions.AuthorizePage("/Authenticated/Users", "AdminOnly");
 });
 
 builder.Services.AddAuthorization(options =>
@@ -47,9 +52,10 @@ builder.Services.AddAuthorization(options =>
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<IHeroRepository, LocalHeroRepository>();
-builder.Services.AddSingleton<IHeroInstanceRepository, LocalHeroInstanceRepository>();
-builder.Services.AddSingleton<IShopItemRepository, LocalShopItemRepository>();
+builder.Services.AddScoped<IHeroRepository, HeroRepository>();
+builder.Services.AddScoped<IHeroInstanceRepository, HeroInstanceRepository>();
+builder.Services.AddScoped<IShopItemRepository, ShopItemRepository>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AppDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")

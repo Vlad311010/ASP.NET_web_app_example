@@ -6,7 +6,7 @@ namespace app.Repositories
     {
         List<Item> _items = new List<Item>()
         {
-            new Item { Id = 1, Name = "AP", Description = "Recieve 5 AP" , Price = 250, Image="images/icon.png", Handler = "?",  Page = "?" }
+            new Item { Id = 1, Name = "AP", Description = "Recieve 5 AP" , Price = 250, Image="images/icon.png"}
         };
 
         public IEnumerable<Item> All => _items;

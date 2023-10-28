@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" asp-page="./Index">Home</a>
+                    <a class="nav-link active" aria-current="page" asp-page="/Public/Index">Home</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -19,7 +19,7 @@
                 {
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-page="./Login">Login</a>
+                            <a class="nav-link active" aria-current="page" asp-page="/Public/Login">Login</a>
                         </li>
                     </ul>
                 }
@@ -44,7 +44,7 @@
                     </li>
                     }
                     <li class="nav-item">
-                        <form asp-page="./Index" asp-page-handler="logout" method="post">
+                        <form asp-page="/Public/Index" asp-page-handler="Logout" method="post">
                             <button class="nav-link">Logout</button>
                         </form>
                     </li>
