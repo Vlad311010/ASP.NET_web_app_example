@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace app.Models
 {
@@ -6,8 +7,12 @@ namespace app.Models
     public class HeroInstance
     {
         public int HeroId { get; set; }
-        public virtual Hero Hero { get; set; } = null!;
         public int OwnerId { get; set; }
+        
+        [JsonIgnore]
+        public virtual Hero Hero { get; set; } = null!;
+        
+        [JsonIgnore]
         public virtual User Owner { get; set; } = null!;
 
         public int Level { get; set; }

@@ -14,5 +14,7 @@ namespace app.Models
         [Required]
         [Range(0,99999)]
         public int Price { get; set; }
+
+        public virtual ICollection<Item> OwnedItems { get; } = new List<Item>();
     }
 }

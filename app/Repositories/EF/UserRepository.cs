@@ -1,4 +1,5 @@
 ﻿using app.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Repositories
 {
@@ -20,7 +21,10 @@ namespace app.Repositories
             user.Money = 1000;
             user.ActionPoints = 10;
             user.Score = 0;
-            return _context.Users.Add(user).Entity;
+
+            User newUser = _context.Users.Add(user).Entity;
+            _context.SaveChanges();
+            return newUser;
         }
 
         public User? Authenticate(string login, string password)
@@ -32,7 +36,7 @@ namespace app.Repositories
 
         public User? GetById(int id)
         {
-            return _context.Users.Where(u => u.Id == id).SingleOrDefault();
+            return _context.Users.Where(u => u.Id == id).Include(u => u.OwnedHeroes).SingleOrDefault();
         }
 
         public User? GetByLogin(string login)
@@ -43,12 +47,22 @@ namespace app.Repositories
         public User? Remove(int id)
         {
             User? userToRemove = GetById(id);
-            return _context.Users.Remove(userToRemove).Entity;
+            _context.Users.Remove(userToRemove);
+            
+            _context.SaveChanges();
+            return userToRemove;
         }
 
         public User? Update(User user)
         {
-            throw new NotImplementedException();
+            if (!ValidateUser(user, false)) return null;
+
+            User originalEntity = _context.Entry(user).Entity;
+            user.Id = originalEntity.Id;
+
+            _context.Entry(user).State = EntityState.Modified;
+            _context.SaveChanges();
+            return _context.Users.Entry(user).Entity;
         }
 
         private bool ValidateUser(User user, bool checkForUniqueLogin = false)

@@ -17,7 +17,7 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
                     @if (User.IsInRole("Admin"))
                     {
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <a asp-page="/Authenticated/Shop/Edit" asp-route-itemId="@Model.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
                     }
                 </div>
                 <small class="text-muted">@Model.Price$</small>

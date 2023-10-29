@@ -1,4 +1,5 @@
 ﻿using app.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Repositories
 {
@@ -11,7 +12,7 @@ namespace app.Repositories
             _context = context;
         }
 
-        public IEnumerable<HeroInstance> All => _context.HeroInstances;
+        public IEnumerable<HeroInstance> All => _context.HeroInstances.Include(h => h.Hero).ToList();
 
         public HeroInstance Get(int userId, int heroId)
         {
