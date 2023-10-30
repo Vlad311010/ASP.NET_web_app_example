@@ -1,5 +1,6 @@
 using app;
 using app.Repositories;
+using app.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,13 +30,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddRazorPages(options =>
 {
-    // Autorization access
-    /*options.Conventions.AuthorizeFolder("/")
-    .AllowAnonymousToPage("/Login")
-    .AllowAnonymousToPage("/Index")
-    .AllowAnonymousToPage("/Register");
-    // Admin Only
-    options.Conventions.AuthorizePage("/Users", "AdminOnly");*/
     options.Conventions.AllowAnonymousToFolder("/Public");
     options.Conventions.AuthorizeFolder("/Authenticated");
     
@@ -57,9 +51,12 @@ builder.Services.AddScoped<IHeroInstanceRepository, HeroInstanceRepository>();
 builder.Services.AddScoped<IShopItemRepository, ShopItemRepository>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
+var connectionString = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AppDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
+    options.UseSqlServer(connectionString)
 );
+
+
 
 
 var app = builder.Build();
@@ -72,5 +69,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+    var context = service.GetService<AppDbContext>();
+    if (!await context.Users.AnyAsync(u => u.Login == "Admin"))
+    {
+        User Admin = new User("Admin", "Admin", "admin@mail.com", UserType.Admin);
+        context.Users.Add(Admin);
+        await context.SaveChangesAsync();
+    }
+    
+}
 
 app.Run();

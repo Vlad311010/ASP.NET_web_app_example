@@ -44,7 +44,7 @@ namespace app.Repositories
             return 
                 (!checkForUniqueLogin || !_users.Exists(u => u.Login == user.Login)) 
                 &&
-                (!String.IsNullOrEmpty(user.Login) && !String.IsNullOrEmpty(user.Password) && !String.IsNullOrEmpty(user.Email));
+                (!String.IsNullOrEmpty(user.Login) && !String.IsNullOrEmpty(user.PasswordHash) && !String.IsNullOrEmpty(user.Email));
         }
 
         public IEnumerable<User> All 
@@ -59,7 +59,7 @@ namespace app.Repositories
         public User? Authenticate(string login, string password)
         {
             LoadData();
-            User? user = _users.SingleOrDefault(x => x.Login == login && x.Password == password);
+            User? user = _users.SingleOrDefault(x => x.Login == login && x.PasswordHash == password);
             return user;
         }
 

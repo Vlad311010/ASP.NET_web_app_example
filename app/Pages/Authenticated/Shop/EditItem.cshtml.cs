@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using app.Models;
 using app.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Pages
 {
@@ -18,14 +18,15 @@ namespace app.Pages
         [BindProperty]
         public Item Item { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+
+        public async Task<IActionResult> OnGetAsync(int ItemId)
         {
-            if (id == null || _context.Items == null)
+            if (ItemId == null || _context.Items == null)
             {
                 return NotFound();
             }
 
-            var item =  await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == ItemId);
             if (item == null)
             {
                 return NotFound();
@@ -59,12 +60,12 @@ namespace app.Pages
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Authenticated/Shop/Shop");
         }
 
         private bool ItemExists(int id)
         {
-          return (_context.Items?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Items?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿@page "/Shop/Edit/{itemId}"
-@model app.Pages.EditItemModel
+﻿@page "/Shop/Add"
+@model app.Pages.Authenticated.Shop.AddItemModel
 
-
-<h1>EditItem</h1>
+<h1>AddItem</h1>
 
 <h4>Item</h4>
 <hr />
@@ -10,7 +9,6 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Item.Id" />
             <div class="form-group">
                 <label asp-for="Item.Name" class="control-label"></label>
                 <input asp-for="Item.Name" class="form-control" />
@@ -32,7 +30,7 @@
                 <span asp-validation-for="Item.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -41,3 +39,4 @@
 <div>
     <a asp-page="./Shop">Back to List</a>
 </div>
+

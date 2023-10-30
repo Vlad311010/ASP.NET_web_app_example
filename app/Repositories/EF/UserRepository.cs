@@ -1,4 +1,5 @@
 ﻿using app.Models;
+using app.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace app.Repositories
@@ -29,8 +30,11 @@ namespace app.Repositories
 
         public User? Authenticate(string login, string password)
         {
-            User? user = _context.Users.SingleOrDefault(x => x.Login == login && x.Password == password);
-            return user;
+            User? user = _context.Users.SingleOrDefault(x => x.Login == login);
+            if (user == null) return null;
+
+            bool isPasswordCorrect = PasswordHashing.VerifyPassword(password, user.PasswordHash, user.Salt);
+            return isPasswordCorrect ? user : null;
             
         }
 
@@ -70,7 +74,7 @@ namespace app.Repositories
             return
                 (!checkForUniqueLogin || !_context.Users.Any(u => u.Login == user.Login))
                 &&
-                (!String.IsNullOrEmpty(user.Login) && !String.IsNullOrEmpty(user.Password) && !String.IsNullOrEmpty(user.Email));
+                (!String.IsNullOrEmpty(user.Login) && !String.IsNullOrEmpty(user.PasswordHash) && !String.IsNullOrEmpty(user.Email));
         }
     }
 }
