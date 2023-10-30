@@ -45,7 +45,7 @@ namespace app.Repositories
 
         public User? GetByLogin(string login)
         {
-            return _context.Users.Where(u => u.Login == login).SingleOrDefault();
+            return _context.Users.Where(u => u.Login == login).Include(u => u.OwnedHeroes).SingleOrDefault();
         }
 
         public User? Remove(int id)

@@ -4,25 +4,28 @@
 @{
     string hpPercent = Model.GetHPPercent().ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
     string mpPercent = Model.GetMPPercent().ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+    string classColor = Model.Class.GetAttribute<ColorAttribute>().HexColor;
 }
 
 <div class="HeroView">
     <div class="HeroView-Type">
-        <div class="HeroView-Type Border-Bottom">
-            Class: @Model.Class.ToString()
+        <div style="display:inline" class="HeroView-Type Border-Bottom">
+            <div>Class:</div>
+            <div style="color:@classColor">@Model.Class.ToString()</div>
         </div>
-        <div class="HeroView-Type Border-Bottom Step">
-            Name: @Model.Name
+        <div style="display:inline" class="mx-4 HeroView-Type Border-Bottom Step">
+            <div>Name:</div>
+            <div>@Model.Name</div>
         </div>
     </div>
     <div>
         Stats
         <div style="height:1.4em" class="Border">
-            <div class="HPBar" style="width:@hpPercent%;height:1.2em"></div>
+            <div class="HPBar" style="width:@hpPercent%"></div>
             <div class="BarText">@Model.CurrentHP/@Model.MaxHP</div>
         </div>
         <div style="height:1.4em" class="Border">
-            <div class="MPBar" style="width:@mpPercent%;height:1.2em"></div>
+            <div class="MPBar" style="width:@mpPercent%;"></div>
             <div class="BarText">@Model.CurrentMP/@Model.MaxMP</div>
         </div>
     </div>

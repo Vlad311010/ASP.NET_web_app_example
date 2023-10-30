@@ -1,0 +1,22 @@
+﻿@page "/HeroesShop"
+@model app.Pages.HeroesShopModel
+
+<div class="my-4 container">
+    <div class="row">
+        @{ 
+            int elementsPerRow = 4;
+            int counter = elementsPerRow;
+        }
+        @foreach (Hero hero in Model.Heroes)
+        {
+        <div class="col-3 my-3">
+            <partial name="_HeroView" model="hero" />
+        </div>
+            @if (--counter == 0)
+            {
+                counter = elementsPerRow;
+                <div class="w-100"></div>
+            }
+        }
+    </div>
+</div>

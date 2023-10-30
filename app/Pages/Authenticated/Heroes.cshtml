@@ -3,8 +3,16 @@
 
 
 <ul>
-    @foreach (HeroInstanceFullInfo hero in Model.OwnedHeroes)
+    @if (@Model.OwnedHeroes.Count != 0)
     {
-        <li><partial name="_HeroInstanceView" model="hero" /></li>
+        @foreach (HeroInstanceFullInfo hero in Model.OwnedHeroes)
+        {
+            <li><partial name="_HeroInstanceView" model="hero" /></li>
+        }
     }
+    else 
+    {
+        <div>You don't own any hero :(</div>
+    }
+    <a asp-page="/Authenticated/HeroShop/" class="my-5 mx-3 btn btn-warning btn-lg px-4">Heroes Shop</a>
 </ul>

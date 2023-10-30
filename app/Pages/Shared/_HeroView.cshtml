@@ -2,29 +2,29 @@
 @model Hero
 @{
     Layout = "";
+    string classColor = Model.Class.GetAttribute<ColorAttribute>().HexColor;
 }
-
 
 <div class="HeroView">
     <div class="HeroView-Type">
-        <div class="HeroView-Type Border-Bottom">
-            Class: @Model.Class.ToString()
+        <div style="display:inline" class="HeroView-Type Border-Bottom">
+            <div>Class:</div>
+            <div style="color:@classColor">@Model.Class.ToString()</div>
         </div>
-        <div class="HeroView-Type Border-Bottom Step">
-            Name: @Model.Name
+        <div style="display:inline" class="mx-4 HeroView-Type Border-Bottom Step">
+            <div>Name:</div>
+            <div>@Model.Name</div>
         </div>
     </div>
     <div>
         Stats
-        <div class="Border">
-            <div class="HPBar"> 
-                @Model.MaxHP
-            </div>
+        <div style="height:1.4em" class="Border">
+            <div class="HPBar"></div>
+            <div class="BarText">@Model.MaxHP</div>
         </div>
-        <div class="Border">
-            <div class="MPBar">
-                @Model.MaxMP
-            </div>
+        <div style="height:1.4em" class="Border">
+            <div class="MPBar"></div>
+            <div class="BarText">@Model.MaxMP</div>
         </div>
     </div>
 </div>

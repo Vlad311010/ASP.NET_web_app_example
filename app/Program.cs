@@ -12,7 +12,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     cookieOptions.LoginPath = "/Login";
     cookieOptions.AccessDeniedPath = "/Forbidden";
 
-    cookieOptions.Events.OnRedirectToAccessDenied = 
+    // cookieOptions.Events.OnRedirectToAccessDenied = 
         cookieOptions.Events.OnRedirectToLogin = ctx =>
         {
             if (ctx.Request.Path.StartsWithSegments("/api"))
@@ -35,6 +35,8 @@ builder.Services.AddRazorPages(options =>
     
     // Admin Only
     options.Conventions.AuthorizePage("/Authenticated/Users", "AdminOnly");
+    options.Conventions.AuthorizePage("/Authenticated/Shop/EditItem", "AdminOnly");
+    options.Conventions.AuthorizePage("/Authenticated/Shop/AddItem", "AdminOnly");
 });
 
 builder.Services.AddAuthorization(options =>
@@ -57,8 +59,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 
-
-
 var app = builder.Build();
 
 Api.MapApi(app);
@@ -71,17 +71,19 @@ app.MapRazorPages();
 app.MapDefaultControllerRoute();
 
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var service = scope.ServiceProvider;
-    var context = service.GetService<AppDbContext>();
-    if (!await context.Users.AnyAsync(u => u.Login == "Admin"))
+    using (var scope = app.Services.CreateScope())
     {
-        User Admin = new User("Admin", "Admin", "admin@mail.com", UserType.Admin);
-        context.Users.Add(Admin);
-        await context.SaveChangesAsync();
+        var service = scope.ServiceProvider;
+        var context = service.GetService<AppDbContext>();
+        if (!await context.Users.AnyAsync(u => u.Login == "Admin"))
+        {
+            User Admin = new User("Admin", "Admin", "admin@mail.com", UserType.Admin);
+            context.Users.Add(Admin);
+            await context.SaveChangesAsync();
+        }
     }
-    
 }
 
 app.Run();
