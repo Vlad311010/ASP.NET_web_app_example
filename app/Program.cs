@@ -35,8 +35,12 @@ builder.Services.AddRazorPages(options =>
     
     // Admin Only
     options.Conventions.AuthorizePage("/Authenticated/Users", "AdminOnly");
+    
     options.Conventions.AuthorizePage("/Authenticated/Shop/EditItem", "AdminOnly");
     options.Conventions.AuthorizePage("/Authenticated/Shop/AddItem", "AdminOnly");
+
+    options.Conventions.AuthorizePage("/Authenticated/HeroesShop/AddHero", "AdminOnly");
+    options.Conventions.AuthorizePage("/Authenticated/HeroesShop/EditHero", "AdminOnly");
 });
 
 builder.Services.AddAuthorization(options =>

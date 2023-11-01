@@ -1,6 +1,10 @@
 ﻿@page "/HeroesShop"
 @model app.Pages.HeroesShopModel
 
+@{
+    ViewData["OwnedHeroes"] = Model.OwnedHeroes;
+}
+
 <div class="my-4 container">
     <div class="row">
         @{ 
@@ -10,7 +14,7 @@
         @foreach (Hero hero in Model.Heroes)
         {
         <div class="col-3 my-3">
-            <partial name="_HeroView" model="hero" />
+            <partial name="_HeroView" model="hero"  view-data="ViewData"/>
         </div>
             @if (--counter == 0)
             {
@@ -19,4 +23,15 @@
             }
         }
     </div>
+</div>
+
+
+<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+    <form method="post">
+        <button type="submit" class=" btn btn-primary btn-lg w-100 px-5 py-2 gap-3">Get Random Contract</button>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-page="/Authenticated/HeroesShop/AddHero" class="bi bi-plus my-3 btn btn-primary btn-lg w-100 px-5 py-2 gap-3">Add Hero</a>
+        }
+    </form>
 </div>

@@ -3,6 +3,12 @@
 @{
     Layout = "";
     string classColor = Model.Class.GetAttribute<ColorAttribute>().HexColor;
+
+    List<int> ownderHeroes;
+    if (ViewData.TryGetValue("OwnedHeroes", out object? obj))
+        ownderHeroes = (List<int>)obj!;
+    else
+        ownderHeroes = new List<int>();
 }
 
 <div class="HeroView">
@@ -15,6 +21,10 @@
             <div>Name:</div>
             <div>@Model.Name</div>
         </div>
+        @if (User.IsInRole("Admin"))
+        {
+        <a asp-page="/Authenticated/HeroesShop/EditHero" asp-route-heroId="@Model.Id" class="p-1 h-50 link-dark border border-dark rounded bi bi-pen"></a>
+        }
     </div>
     <div>
         Stats
@@ -27,4 +37,8 @@
             <div class="BarText">@Model.MaxMP</div>
         </div>
     </div>
+    @if (ownderHeroes.Contains(Model.Id))
+    {
+        <div class="mt-1 ms-3 me-3 text-center text-white bg-success"><u class="">Already Owned</u></div>
+    }
 </div>
