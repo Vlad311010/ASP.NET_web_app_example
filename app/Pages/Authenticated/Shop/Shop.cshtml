@@ -32,4 +32,10 @@
             }
         </div>
     </div>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-page="/Authenticated/Shop/AddItem" class="bi bi-plus my-3 btn btn-primary btn-lg w-75 my-5 px-5 py-2 gap-3">Add Item</a>
+        }
+    </div>
 </div>

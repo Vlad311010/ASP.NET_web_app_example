@@ -1,4 +1,4 @@
-﻿@using app.Utils;
+﻿@using app.ViewModels;
 @model HeroInstanceFullInfo
 
 @{
@@ -16,6 +16,10 @@
         <div style="display:inline" class="mx-4 HeroView-Type Border-Bottom Step">
             <div>Name:</div>
             <div>@Model.Name</div>
+        </div>
+        <div style="display:inline" class="HeroView-Type Border-Bottom Step">
+            <div>Lv:</div>
+            <div>@Model.Level</div>
         </div>
     </div>
     <div>

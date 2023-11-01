@@ -18,5 +18,16 @@ namespace app.Models
         public int Level { get; set; }
         public int CurrentHP { get; set; }
         public int CurrentMP { get; set; }
+
+        public HeroInstance() { }
+        public HeroInstance(Hero hero, User owner) 
+        {
+            Hero = hero;
+            Owner = owner;
+            CurrentHP = hero.MaxHP;
+            CurrentMP = hero.MaxMP;
+            Level = 1;
+        }
+
     }
 }

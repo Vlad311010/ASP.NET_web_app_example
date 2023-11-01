@@ -14,9 +14,16 @@ namespace app.Repositories
 
         public IEnumerable<HeroInstance> All => _context.HeroInstances.Include(h => h.Hero).ToList();
 
+
         public HeroInstance Get(int userId, int heroId)
         {
             return _context.HeroInstances.Where(m => m.OwnerId == userId && m.Hero.Id == userId).SingleOrDefault();
+        }
+        public HeroInstance Add(HeroInstance entity)
+        {
+            _context.HeroInstances.Add(entity);
+            _context.SaveChanges();
+            return entity;
         }
     }
 }

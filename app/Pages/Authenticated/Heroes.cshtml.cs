@@ -1,6 +1,7 @@
 using app.Models;
 using app.Repositories;
 using app.Utils;
+using app.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -21,9 +22,10 @@ namespace app.Pages
 
         public List<HeroInstanceFullInfo> OwnedHeroes { get; set; }
 
-        public void OnGet(string userName)
+        public void OnGet()
         {
-            User? user = _userRepo.GetByLogin(userName);
+            string userLogin = HttpContext.User.GetLogin();
+            User? user = _userRepo.GetByLogin(userLogin);
             if (user == null) RedirectToPage("/Login");
 
             OwnedHeroes = _heroInstanceRepo.All.Where(h => h.OwnerId == user.Id).Select(h => new HeroInstanceFullInfo(GetHeroFromInstance(h), h)).ToList();

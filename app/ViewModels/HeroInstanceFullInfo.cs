@@ -1,6 +1,6 @@
 ﻿using app.Models;
 
-namespace app.Utils
+namespace app.ViewModels
 {
     public class HeroInstanceFullInfo
     {
@@ -10,8 +10,8 @@ namespace app.Utils
         public int MaxMP { get; private set; }
         public int CurrentHP { get; private set; }
         public int CurrentMP { get; private set; }
-        public int Level { get; private set;  }
-        
+        public int Level { get; private set; }
+
         public HeroInstanceFullInfo(Hero hero, HeroInstance instance)
         {
             Class = hero.Class;
@@ -23,7 +23,7 @@ namespace app.Utils
             Level = instance.Level;
         }
 
-        public float GetHPPercent() { return (CurrentHP / (float)MaxHP) * 100f; }
-        public float GetMPPercent() { return (CurrentMP / (float)MaxMP) * 100f; }
+        public float GetHPPercent() { return CurrentHP / (float)MaxHP * 100f; }
+        public float GetMPPercent() { return CurrentMP / (float)MaxMP * 100f; }
     }
 }

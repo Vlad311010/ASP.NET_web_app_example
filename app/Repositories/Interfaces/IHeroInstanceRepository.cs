@@ -7,5 +7,7 @@ namespace app.Repositories
         IEnumerable<HeroInstance> All { get; }
 
         HeroInstance Get(int userId, int heroId);
+
+        HeroInstance Add(HeroInstance entity);
     }
 }

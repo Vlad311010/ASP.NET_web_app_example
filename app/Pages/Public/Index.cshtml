@@ -29,7 +29,7 @@
         {
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <a asp-page="/Authenticated/Game" class=" btn btn-primary btn-lg px-4 gap-3">Play!</a>
-                <a asp-page="/Authenticated/Heroes" asp-route-userName="@Model.userName" class=" btn btn-primary btn-lg px-4 gap-3">My Heroes</a>
+                <a asp-page="/Authenticated/Heroes" class=" btn btn-primary btn-lg px-4 gap-3">My Heroes</a>
                 <a asp-page="/Authenticated/Shop/Shop" class="btn btn-warning btn-lg px-4">Shop</a>
                 <a asp-page="/Authenticated/HeroesShop/HeroesShop" class="btn btn-warning btn-lg px-4">Heroes Shop</a>
                 @if (User.IsInRole("Admin"))

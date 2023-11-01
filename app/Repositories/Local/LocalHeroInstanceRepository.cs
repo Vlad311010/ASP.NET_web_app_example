@@ -11,6 +11,11 @@ namespace app.Repositories
             // new HeroInstance() { OwnerId=3, HeroId=2, CurrentHP = 10, CurrentMP = 130, Level = 4},
         };
 
+        public HeroInstance Add(HeroInstance entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public HeroInstance Get(int userId, int id)
         {
             return All.Where(m => m.OwnerId == userId && m.Hero.Id == id).SingleOrDefault();
