@@ -4,7 +4,8 @@ namespace app.Repositories
 {
     public interface IHeroRepository
     {
-        IEnumerable<Hero> All { get; }
+        Task<IEnumerable<Hero>> All();
         Hero? Get(int id);
+        Task<Hero?> GetAsync(int id);
     }
 }

@@ -16,7 +16,7 @@ namespace app.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             string login = HttpContext.User.GetLogin();
-            var user = _userRepo.GetByLogin(login);
+            var user = await _userRepo.GetByLogin(login);
             return View(user);
         }
     }

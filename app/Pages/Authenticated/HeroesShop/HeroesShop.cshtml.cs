@@ -23,23 +23,23 @@ namespace app.Pages
         public List<Hero> Heroes { get; set; }
         public string Message { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
             string userLogin = HttpContext.User.GetLogin();
-            User? user = _userRepo.GetByLogin(userLogin);
+            User? user = await _userRepo.GetByLogin(userLogin);
             if (user == null) RedirectToPage("/Login");
 
-            Heroes = _heroRepo.All.ToList();
+            Heroes = (List<Hero>)await _heroRepo.All();
             OwnedHeroes = user.OwnedHeroes.Select(h => h.HeroId).ToList();
         }
 
         public async Task<IActionResult> OnPostGetRandomHeroAsync()
         {
             string userLogin = HttpContext.User.GetLogin();
-            User? user = _userRepo.GetByLogin(userLogin);
+            User? user = await _userRepo.GetByLogin(userLogin);
             if (user == null) RedirectToPage("/Login");
 
-            Heroes = _heroRepo.All.ToList();
+            Heroes = (List<Hero>)await _heroRepo.All();
             OwnedHeroes = user.OwnedHeroes.Select(h => h.HeroId).ToList();
 
             var notOwnedHeroes = Heroes.Where(h => !OwnedHeroes.Contains(h.Id));
@@ -52,7 +52,7 @@ namespace app.Pages
             var rand = new Random();
             Hero hero = notOwnedHeroes.ElementAt(rand.Next(notOwnedHeroes.Count()));
             HeroInstance instance = new HeroInstance(hero, user);
-            _heroInstanceRepo.Add(instance);
+            await _heroInstanceRepo.Add(instance);
             return RedirectToPage("./HeroesShop");
         }
     }

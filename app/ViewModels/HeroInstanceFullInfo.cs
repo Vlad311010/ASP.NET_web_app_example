@@ -11,6 +11,7 @@ namespace app.ViewModels
         public int CurrentHP { get; private set; }
         public int CurrentMP { get; private set; }
         public int Level { get; private set; }
+        public User Owner { get; private set; }
 
         public HeroInstanceFullInfo(Hero hero, HeroInstance instance)
         {
@@ -21,6 +22,8 @@ namespace app.ViewModels
             CurrentHP = instance.CurrentHP;
             CurrentMP = instance.CurrentMP;
             Level = instance.Level;
+            Owner = instance.Owner;
+
         }
 
         public float GetHPPercent() { return CurrentHP / (float)MaxHP * 100f; }

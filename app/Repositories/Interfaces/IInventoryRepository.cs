@@ -4,7 +4,7 @@ namespace app.Repositories
 {
     public interface IInventoryRepository
     {
-        IEnumerable<Inventory> All { get; }
-        List<Item> Get(int userId);
+        Task<IEnumerable<Inventory>> All();
+        Task<List<Item>> Get(int userId);
     }
 }

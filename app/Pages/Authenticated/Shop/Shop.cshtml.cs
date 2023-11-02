@@ -21,32 +21,33 @@ namespace app.Pages
         [BindProperty]
         public List<Item> Items { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            Items = _shopItemRepo.All.ToList();
+            Items = (List<Item>)await _shopItemRepo.All();
         }
 
-        public void OnPostAP()
+        public async Task OnPostAPAsync()
         {
-            Items = _shopItemRepo.All.ToList();
+            Items = (List<Item>)await _shopItemRepo.All();
 
             string login = HttpContext.User.GetLogin();
-            User = _userRepo.GetByLogin(login);
+            User = await _userRepo.GetByLogin(login);
             User.Money -= 250;
             User.ActionPoints += 5;
-            _userRepo.Update(User);
+            await _userRepo.Update(User);
         }
 
-        public void OnPostBuyItem(int itemId)
+        public async Task OnPostBuyItemAsync(int itemId)
         {
-            Items = _shopItemRepo.All.ToList();
+            Items = (List<Item>)await _shopItemRepo.All();
 
             string login = HttpContext.User.GetLogin();
-            User = _userRepo.GetByLogin(login);
+            User = await _userRepo.GetByLogin(login);
 
-            Item item = _shopItemRepo.Get(itemId);
+            Item item = await _shopItemRepo.Get(itemId);
+            // Inventory ownedItem = new Inventory();
+            // User.OwnedItems.Add(item);
             User.Money -= item.Price;
-
 
         }
     }

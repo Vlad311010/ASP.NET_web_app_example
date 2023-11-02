@@ -1,4 +1,5 @@
 ﻿using app.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Repositories
 {
@@ -10,11 +11,14 @@ namespace app.Repositories
             _context = context;
         }
 
-        public IEnumerable<Item> All => _context.Items;
-
-        public Item Get(int id)
+        public async Task<IEnumerable<Item>> All()
         {
-            return _context.Items.SingleOrDefault(i => i.Id == id);
+            return await _context.Items.ToListAsync();
+        }
+
+        public async Task<Item> Get(int id)
+        {
+            return await _context.Items.SingleOrDefaultAsync(i => i.Id == id);
         }
     }
 }

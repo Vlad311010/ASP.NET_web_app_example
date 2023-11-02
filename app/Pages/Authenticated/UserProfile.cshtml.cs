@@ -17,9 +17,9 @@ namespace app.Pages
         [BindProperty(SupportsGet = true)]
         public User CurrentUser { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            CurrentUser = _usersRepo.All.Where(m => m.Login == User.Identity?.Name).Single();
+            CurrentUser = (await _usersRepo.All()).ToList().Where(m => m.Login == User.Identity?.Name).Single();
         }
     }
 }

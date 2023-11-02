@@ -22,13 +22,15 @@ namespace app.Pages
 
         public List<HeroInstanceFullInfo> OwnedHeroes { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
             string userLogin = HttpContext.User.GetLogin();
-            User? user = _userRepo.GetByLogin(userLogin);
+            User? user = await _userRepo.GetByLogin(userLogin);
             if (user == null) RedirectToPage("/Login");
 
-            OwnedHeroes = _heroInstanceRepo.All.Where(h => h.OwnerId == user.Id).Select(h => new HeroInstanceFullInfo(GetHeroFromInstance(h), h)).ToList();
+            OwnedHeroes = (await _heroInstanceRepo.All()).ToList()
+                .Where(h => h.OwnerId == user.Id)
+                .Select(h => new HeroInstanceFullInfo(GetHeroFromInstance(h), h)).ToList();
         }
 
         private Hero GetHeroFromInstance(HeroInstance instance)

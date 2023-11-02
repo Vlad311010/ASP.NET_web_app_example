@@ -66,44 +66,44 @@ namespace app
                 return Results.Ok();
             });
 
-            app.MapGet("api/users", (IUserRepository db) =>
+            app.MapGet("api/users", async (IUserRepository db) =>
             {
-                var users = db.All.ToList();
+                var users = await db.All();
                 return Results.Ok(users);
             }).RequireAuthorization("AdminOnly");
 
-            app.MapGet("api/users/{userId}", ([FromRoute] int userId, IUserRepository db) =>
+            app.MapGet("api/users/{userId}", async ([FromRoute] int userId, IUserRepository db) =>
             {
-                User? user = db.GetById(userId);
+                User? user = await db.GetById(userId);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapPost("api/users/create", ([FromBody] User user, IUserRepository db) =>
+            app.MapPost("api/users/create", async ([FromBody] User user, IUserRepository db) =>
             {
-                User? newUser = db.Add(user);
+                User? newUser = await db.Add(user);
                 return newUser != null ? Results.Ok(newUser) : Results.BadRequest();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapPost("api/users/update", ([FromBody] User user, IUserRepository db) =>
+            app.MapPost("api/users/update", async ([FromBody] User user, IUserRepository db) =>
             {
-                User? updatedUser = db.Update(user);
+                User? updatedUser = await db.Update(user);
                 return updatedUser != null ? Results.Ok(updatedUser) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapDelete("api/users/remove/{userId}", ([FromRoute] int userId, IUserRepository db) =>
+            app.MapDelete("api/users/remove/{userId}", async ([FromRoute] int userId, IUserRepository db) =>
             {
-                User? user = db.Remove(userId);
+                User? user = await db.Remove(userId);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             }).RequireAuthorization("AdminOnly");
 
-            app.MapPost("api/users/giveAdminPrivilege/{login}", ([FromRoute] string login, IUserRepository db) =>
+            app.MapPost("api/users/giveAdminPrivilege/{login}", async ([FromRoute] string login, IUserRepository db) =>
             {
-                User? user = db.GetByLogin(login);
+                User? user = await db.GetByLogin(login);
                 if (user == null) 
                     return Results.NotFound();
                 
                 user.Type = UserType.Admin;
-                User? updatedUser = db.Update(user);
+                User? updatedUser = await db.Update(user);
                 return Results.Ok(updatedUser);
             }).RequireAuthorization("AdminOnly");
 

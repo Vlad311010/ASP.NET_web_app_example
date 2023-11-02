@@ -22,14 +22,17 @@ namespace app.Pages
         public List<Hero> Heroes { get; set; }
         public List<HeroInstance> Instances { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            Users = _userRepo.All.ToList();
-            Heroes = _heroRepo.All.ToList();
-            Instances = _heroInstanceRepo.All.ToList();
+            Users = (List<User>)await _userRepo.All();
+            Heroes = (List<Hero>)await _heroRepo.All();
+            Instances = (List<HeroInstance>)await _heroInstanceRepo.All();
         }
 
-        public Hero GetHero(int id) { return _heroRepo.Get(id); }
+        public async Task<Hero> GetHero(int id) 
+        { 
+            return await _heroRepo.GetAsync(id);
+        }
 
     }
 }

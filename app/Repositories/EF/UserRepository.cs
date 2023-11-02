@@ -12,9 +12,12 @@ namespace app.Repositories
             _context = context;
         }
 
-        public IEnumerable<User> All => _context.Users;
+        public async Task<IEnumerable<User>> All()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
-        public User? Add(User user)
+        public async Task<User?> Add(User user)
         {
             if (!ValidateUser(user, true))
                 return null;
@@ -24,7 +27,7 @@ namespace app.Repositories
             user.Score = 0;
 
             User newUser = _context.Users.Add(user).Entity;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return newUser;
         }
 
@@ -38,26 +41,26 @@ namespace app.Repositories
             
         }
 
-        public User? GetById(int id)
+        public async Task<User?> GetById(int id)
         {
-            return _context.Users.Where(u => u.Id == id).Include(u => u.OwnedHeroes).SingleOrDefault();
+            return await _context.Users.Where(u => u.Id == id).Include(u => u.OwnedHeroes).SingleOrDefaultAsync();
         }
 
-        public User? GetByLogin(string login)
+        public async Task<User?> GetByLogin(string login)
         {
-            return _context.Users.Where(u => u.Login == login).Include(u => u.OwnedHeroes).SingleOrDefault();
+            return await _context.Users.Where(u => u.Login == login).Include(u => u.OwnedHeroes).Include(u => u.OwnedItems).SingleOrDefaultAsync();
         }
 
-        public User? Remove(int id)
+        public async Task<User?> Remove(int id)
         {
-            User? userToRemove = GetById(id);
+            User? userToRemove = await GetById(id);
             _context.Users.Remove(userToRemove);
-            
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
             return userToRemove;
         }
 
-        public User? Update(User user)
+        public async Task<User?> Update(User user)
         {
             if (!ValidateUser(user, false)) return null;
 
@@ -65,7 +68,7 @@ namespace app.Repositories
             user.Id = originalEntity.Id;
 
             _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return _context.Users.Entry(user).Entity;
         }
 

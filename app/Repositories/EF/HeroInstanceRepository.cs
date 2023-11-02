@@ -1,5 +1,6 @@
 ﻿using app.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace app.Repositories
 {
@@ -12,16 +13,19 @@ namespace app.Repositories
             _context = context;
         }
 
-        public IEnumerable<HeroInstance> All => _context.HeroInstances.Include(h => h.Hero).ToList();
-
-
-        public HeroInstance Get(int userId, int heroId)
+        public async Task<IEnumerable<HeroInstance>> All()
         {
-            return _context.HeroInstances.Where(m => m.OwnerId == userId && m.Hero.Id == userId).SingleOrDefault();
+            return await _context.HeroInstances.Include(h => h.Hero).ToListAsync();
+        }   
+
+
+        public async Task<HeroInstance> Get(int userId, int heroId)
+        {
+            return await _context.HeroInstances.Where(m => m.OwnerId == userId && m.Hero.Id == userId).SingleOrDefaultAsync();
         }
-        public HeroInstance Add(HeroInstance entity)
+        public async Task<HeroInstance> Add(HeroInstance entity)
         {
-            _context.HeroInstances.Add(entity);
+            await _context.HeroInstances.AddAsync(entity);
             _context.SaveChanges();
             return entity;
         }

@@ -4,10 +4,10 @@ namespace app.Repositories
 {
     public interface IHeroInstanceRepository
     {
-        IEnumerable<HeroInstance> All { get; }
+        Task<IEnumerable<HeroInstance>> All();
 
-        HeroInstance Get(int userId, int heroId);
+        Task<HeroInstance> Get(int userId, int heroId);
 
-        HeroInstance Add(HeroInstance entity);
+        Task<HeroInstance> Add(HeroInstance entity);
     }
 }

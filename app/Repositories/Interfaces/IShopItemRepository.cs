@@ -4,7 +4,7 @@ namespace app.Repositories
 {
     public interface IShopItemRepository
     {
-        IEnumerable<Item> All { get; }
-        Item Get(int id);
+        Task<IEnumerable<Item>> All();
+        Task<Item> Get(int id);
     }
 }

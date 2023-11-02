@@ -10,7 +10,7 @@
         <ul>
             @foreach (HeroInstance instance in Model.Instances.Where(m => m.OwnerId == user.Id))
             {
-                var hero = Model.GetHero(instance.Hero.Id);
+                var hero = await Model.GetHero(instance.Hero.Id);
                 var heroInfo = new HeroInstanceFullInfo(hero, instance);
 
                 <li><partial name="_HeroInstanceView" model="heroInfo" /></li>
