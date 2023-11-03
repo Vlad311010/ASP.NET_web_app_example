@@ -10,18 +10,23 @@ namespace app.Pages
     {
         private readonly IUserRepository _userRepo;
         private readonly IShopItemRepository _shopItemRepo;
-        public ShopModel(IUserRepository userRepo, IShopItemRepository shopItemRepo)
+        private readonly IInventoryRepository _invertoryRepo;
+        public ShopModel(IUserRepository userRepo, IShopItemRepository shopItemRepo, IInventoryRepository invertoryRepo)
         {
             _userRepo = userRepo;
             _shopItemRepo = shopItemRepo;
+            _invertoryRepo = invertoryRepo;
         }
 
         public User? User { get; set; }
         
         [BindProperty]
         public List<Item> Items { get; set; }
+        
+        [BindProperty]
+        public int ItemId { get; set; }
 
-        public async Task OnGet()
+        public async Task OnGetAsync()
         {
             Items = (List<Item>)await _shopItemRepo.All();
         }
@@ -45,8 +50,11 @@ namespace app.Pages
             User = await _userRepo.GetByLogin(login);
 
             Item item = await _shopItemRepo.Get(itemId);
-            // Inventory ownedItem = new Inventory();
-            // User.OwnedItems.Add(item);
+            Inventory ownedItem = new Inventory();
+            ownedItem.Owner = User;
+            ownedItem.Item = item;
+
+            await _invertoryRepo.Add(ownedItem);
             User.Money -= item.Price;
 
         }

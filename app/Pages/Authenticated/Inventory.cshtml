@@ -1,0 +1,24 @@
+﻿@page "/Inventory/{UserLogin}"
+@model app.Pages.Authenticated.InventoryModel
+
+
+@if (Model.OwnedItems.Count > 0)
+{
+    <div class="my-4 container">
+        <div class="row">
+            @foreach (OwnedItemView item in Model.OwnedItems)
+            {
+                <div class="col-3 my-3">
+                    <partial name="_OwnedItemView" model="item" />
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h3>Nothing here</h3>
+    <a asp-page="./Shop/Shop" class="btn btn-warning btn-lg px-4">Shop</a>
+}
+    
+    
