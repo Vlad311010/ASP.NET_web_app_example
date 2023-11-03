@@ -72,6 +72,19 @@ namespace app.Repositories
             return _context.Users.Entry(user).Entity;
         }
 
+        public async Task<bool> WithdrawMoney(User user, int amount)
+        {
+            if (user.Money < amount) 
+                return false;
+            else
+            {
+                user.Money -= amount;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+        }
+
         private bool ValidateUser(User user, bool checkForUniqueLogin = false)
         {
             return

@@ -10,6 +10,7 @@ namespace app.Repositories
         Task<User?> GetById(int id);
         Task<User?> Add(User user);
         Task<User?> Update(User user);
+        Task<bool> WithdrawMoney(User user, int amount);
         Task<User?> Remove(int id);
     }
 }

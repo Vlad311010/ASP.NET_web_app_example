@@ -20,11 +20,9 @@ namespace app.Pages
 
         public User? User { get; set; }
         
-        [BindProperty]
         public List<Item> Items { get; set; }
         
-        [BindProperty]
-        public int ItemId { get; set; }
+        public string Message { get ; set; }
 
         public async Task OnGetAsync()
         {
@@ -37,9 +35,13 @@ namespace app.Pages
 
             string login = HttpContext.User.GetLogin();
             User = await _userRepo.GetByLogin(login);
-            User.Money -= 250;
-            User.ActionPoints += 5;
-            await _userRepo.Update(User);
+            if (await _userRepo.WithdrawMoney(User, 250))
+            {
+                User.ActionPoints += 5;
+                await _userRepo.Update(User);
+            }
+            else
+                Message = "Not enought money";
         }
 
         public async Task OnPostBuyItemAsync(int itemId)
@@ -50,13 +52,17 @@ namespace app.Pages
             User = await _userRepo.GetByLogin(login);
 
             Item item = await _shopItemRepo.Get(itemId);
-            Inventory ownedItem = new Inventory();
-            ownedItem.Owner = User;
-            ownedItem.Item = item;
+            if (await _userRepo.WithdrawMoney(User, item.Price))
+            {
+                Inventory ownedItem = new Inventory();
+                ownedItem.Owner = User;
+                ownedItem.Item = item;
 
-            await _invertoryRepo.Add(ownedItem);
-            User.Money -= item.Price;
-
+                await _invertoryRepo.Add(ownedItem);
+                await _userRepo.Update(User);
+            }
+            else
+                Message = "Not enought money";
         }
     }
 }

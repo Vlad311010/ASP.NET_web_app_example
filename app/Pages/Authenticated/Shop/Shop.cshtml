@@ -32,6 +32,9 @@
             }
         </div>
     </div>
+    <div class="w-100 py-2 text-center text-danger">
+        @Model.Message
+    </div>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
         @if (User.IsInRole("Admin"))
         {
