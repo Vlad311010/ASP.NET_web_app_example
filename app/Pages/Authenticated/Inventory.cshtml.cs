@@ -22,12 +22,18 @@ namespace app.Pages.Authenticated
 
         [BindProperty] public List<OwnedItemView> OwnedItems { get; set; }
 
-        public async Task OnGetAsync(string userLogin)
+        public async Task<IActionResult> OnGetAsync(string userLogin)
         {
+            User? loggedUser = await _userRepo.GetByLogin(HttpContext.User.GetLogin());
             User? user = await _userRepo.GetByLogin(userLogin);
-            // if (user == null) RedirectToPage("/Login");
+            if (user == null) RedirectToPage("/Login");
+
+            if (loggedUser.Type != UserType.Admin && loggedUser != user)
+                return RedirectToPage("/Public/Login");
+
             // OwnedItems = await _inventoryRepo.Get(user.Id);
             OwnedItems = await _inventoryRepo.GetAsOwnedItem(user.Id);
+            return Page();
         }
     }
 }
