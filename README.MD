@@ -129,6 +129,7 @@ In the standard ASP.NET application, static files can be served from the root fo
 * Minimal API
 * Logging
 * Cookies based authentication and roles based authorization
+* Password hashing
 * Configuration
 * Dependency Injection
 
