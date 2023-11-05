@@ -59,7 +59,7 @@ update-database
 ```
 
 ### Database Graph
-![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/DbGraph.png?raw=true)
+![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/DbGraph.png?raw=true)
 
 ### Structure of Project
 
