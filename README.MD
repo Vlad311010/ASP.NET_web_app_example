@@ -131,7 +131,15 @@ In the standard ASP.NET application, static files can be served from the root fo
 * Configuration
 * Dependency Injection
 
-#### API Endpoints
+### API Endpoints:
+* Login
+* Get user by id
+* Get all users
+* Create user
+* Remove user
+* Update user's data
+* Give admin privilege to user
+
 
 ## Technologies
 * .NET Core 7.0
