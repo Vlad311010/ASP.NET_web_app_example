@@ -11,6 +11,12 @@ Project implements below features:
 * Web API
 * Aspnet core razor tools - View Components, partial Views, Tag Helpers, Model Bindings and Validations, Razor Sections etc..  
 
+
+## Screenshots
+![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/Files/Index_Admin.png?raw=true)  
+![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/Files/Login.png?raw=true)  
+![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/Files/OwnedHeroes.png?raw=true)
+
 ## Getting Started
 Use these instructions to get the project up and running.
 
@@ -59,7 +65,7 @@ update-database
 ```
 
 ### Database Graph
-![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/DbGraph.png?raw=true)
+![alt text](https://github.com/Vlad311010/ASP.NET_web_app_example/blob/master/app/Files/DbGraph.png?raw=true)
 
 ### Structure of Project
 * wwwroot
