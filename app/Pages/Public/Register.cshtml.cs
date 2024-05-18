@@ -36,14 +36,14 @@ namespace app.Pages
                 Message = String.Format("Invalid registration data", Login);
                 return Page();
             }
-            if (_usersRepo.GetByLogin(Login) != null)
+            if (await _usersRepo.GetByLogin(Login) != null)
             {
                 ModelState.AddModelError(string.Empty, "User with such login already exists.");
                 Message = String.Format("Login '{0}' already claimed", Login);
                 return Page();
             }
 
-            _usersRepo.Add(user);
+            await _usersRepo.Add(user);
             
             return LocalRedirect(Url.Page("/Public/Login"));
         }
