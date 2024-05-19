@@ -11,6 +11,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     cookieOptions.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     cookieOptions.LoginPath = "/Login";
     cookieOptions.AccessDeniedPath = "/Forbidden";
+    cookieOptions.Cookie.SameSite = SameSiteMode.None;
 
     // cookieOptions.Events.OnRedirectToAccessDenied = 
         cookieOptions.Events.OnRedirectToLogin = ctx =>
@@ -50,12 +51,27 @@ builder.Services.AddAuthorization(options =>
     );
 });
 
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();
 builder.Services.AddScoped<IHeroInstanceRepository, HeroInstanceRepository>();
 builder.Services.AddScoped<IShopItemRepository, ShopItemRepository>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+
+builder.Services.AddCors();
+/*var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder
+                          .WithOrigins("http://localhost:3000*", "http://localhost:3000/", "http://localhost:3000/*", "https://localhost:7218")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                      });
+});*/
 
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -67,12 +83,23 @@ var app = builder.Build();
 
 Api.MapApi(app);
 
+app.UseCors(builder => builder
+.WithOrigins("http://localhost:3000", "https://localhost:3000")
+.AllowAnyMethod()
+.AllowAnyHeader()
+.AllowCredentials()
+.WithExposedHeaders("set-cookie")
+);
+
 app.UseStaticFiles();
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
+// app.UseCors(MyAllowSpecificOrigins); 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
+
+
 
 
 if (app.Environment.IsDevelopment())
