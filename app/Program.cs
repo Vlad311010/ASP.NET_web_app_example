@@ -80,6 +80,7 @@ app.UseStaticFiles();
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
+// app.UseCors(MyAllowSpecificOrigins); 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
 
