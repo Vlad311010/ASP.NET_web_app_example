@@ -11,6 +11,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     cookieOptions.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     cookieOptions.LoginPath = "/Login";
     cookieOptions.AccessDeniedPath = "/Forbidden";
+    cookieOptions.Cookie.SameSite = SameSiteMode.None;
 
     // cookieOptions.Events.OnRedirectToAccessDenied = 
         cookieOptions.Events.OnRedirectToLogin = ctx =>
@@ -50,12 +51,13 @@ builder.Services.AddAuthorization(options =>
     );
 });
 
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();
 builder.Services.AddScoped<IHeroInstanceRepository, HeroInstanceRepository>();
 builder.Services.AddScoped<IShopItemRepository, ShopItemRepository>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+
+builder.Services.AddCors();
 
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -67,12 +69,21 @@ var app = builder.Build();
 
 Api.MapApi(app);
 
+app.UseCors(builder => builder
+.WithOrigins("http://localhost:3000", "https://localhost:3000")
+.AllowAnyMethod()
+.AllowAnyHeader()
+.AllowCredentials()
+);
+
 app.UseStaticFiles();
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
+
+
 
 
 if (app.Environment.IsDevelopment())
