@@ -31,7 +31,15 @@ namespace app.Models
         public User() { }
         public User(string Login, string Password, string Email, UserType type=UserType.User) 
         {
-            string passwordHash = PasswordHashing.HashPasword(Password, out byte[] salt);
+            string passwordHash;
+            byte[] salt;
+            if (string.IsNullOrEmpty(Password))
+            {
+                passwordHash = "";
+                salt = new byte[0];
+            }
+            else
+                passwordHash = PasswordHashing.HashPasword(Password, out salt);
 
             this.Login = Login;
             this.PasswordHash = passwordHash;

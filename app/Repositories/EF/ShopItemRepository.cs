@@ -16,9 +16,14 @@ namespace app.Repositories
             return await _context.Items.ToListAsync();
         }
 
-        public async Task<Item> Get(int id)
+        public async Task<Item> GetAsync(int id)
         {
             return await _context.Items.SingleOrDefaultAsync(i => i.Id == id);
+        }
+
+        public Item Get(int id)
+        {
+            return _context.Items.SingleOrDefault(i => i.Id == id);
         }
     }
 }

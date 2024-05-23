@@ -47,7 +47,7 @@ builder.Services.AddRazorPages(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
-        policy.RequireRole(new string[] { "Admin" } )
+        policy.RequireRole(new string[] { "Admin" })
     );
 });
 
@@ -80,7 +80,6 @@ app.UseStaticFiles();
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
-// app.UseCors(MyAllowSpecificOrigins); 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
 

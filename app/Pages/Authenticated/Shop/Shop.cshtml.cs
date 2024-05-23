@@ -51,7 +51,7 @@ namespace app.Pages
             string login = HttpContext.User.GetLogin();
             User = await _userRepo.GetByLogin(login);
 
-            Item item = await _shopItemRepo.Get(itemId);
+            Item item = await _shopItemRepo.GetAsync(itemId);
             if (await _userRepo.WithdrawMoney(User, item.Price))
             {
                 Inventory ownedItem = new Inventory();
