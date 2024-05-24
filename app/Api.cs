@@ -279,8 +279,10 @@ namespace app
                     await inventoryRepo.Add(ownedItem);
                     await usersRepo.Update(user);
                 }
+                else
+                    return Results.Json(new { error = "insufficient funds" }, statusCode: 409);
 
-                return Results.Ok(item);
+                return Results.Json(new { moneyLeft = user.Money, item.Name, item.Id }, statusCode: 200);
             });
 
             app.MapPost("api/shop/buyAP", async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo) =>
@@ -295,8 +297,10 @@ namespace app
                     user.ActionPoints += 5;
                     await usersRepo.Update(user);
                 }
+                else
+                    return Results.Json(new { error = " " }, statusCode: 409);
 
-                return Results.Ok();
+                return Results.Json(new { moneyLeft = user.Money, AP=user.ActionPoints }, statusCode: 200);
             });
 
 
