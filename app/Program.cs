@@ -1,11 +1,12 @@
-using app;
 using app.Repositories;
 using app.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions => {
     cookieOptions.ExpireTimeSpan = TimeSpan.FromMinutes(20);
@@ -13,8 +14,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     cookieOptions.AccessDeniedPath = "/Forbidden";
     cookieOptions.Cookie.SameSite = SameSiteMode.None;
 
+
     // cookieOptions.Events.OnRedirectToAccessDenied = 
-        cookieOptions.Events.OnRedirectToLogin = ctx =>
+    cookieOptions.Events.OnRedirectToLogin = ctx =>
         {
             if (ctx.Request.Path.StartsWithSegments("/api"))
             {
@@ -67,7 +69,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-Api.MapApi(app);
+// Api.MapApi(app);
 
 app.UseCors(builder => builder
 .WithOrigins("http://localhost:3000", "https://localhost:3000")
@@ -83,7 +85,7 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
 
-
+app.MapControllers();
 
 
 if (app.Environment.IsDevelopment())
