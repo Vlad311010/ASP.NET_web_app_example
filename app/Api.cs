@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app
 {
@@ -82,15 +83,6 @@ namespace app
             public string Password { get; set; }
         }
 
-        private static bool AuthenticateUserRequest(ClaimsPrincipal requster, int allowedId)
-        {
-            return requster.HasClaim(ClaimTypes.Role, "Admin") || requster.HasClaim("UserId", allowedId.ToString());
-        }
-
-        private static bool AuthenticateUserRequest(ClaimsPrincipal requster, string owner)
-        {
-            return requster.HasClaim(ClaimTypes.Role, "Admin") || requster.HasClaim(ClaimTypes.Name, owner);
-        }
 
         internal static void MapApi(WebApplication app)
         {
@@ -186,22 +178,16 @@ namespace app
 
             // frontend api
 
-            app.MapGet("api/userData/{userLogin}", async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository db) =>
+            app.MapGet("api/userData/{userLogin}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository db) =>
             {
                 User? user = await db.GetByLogin(userLogin);
-                if (AuthenticateUserRequest(ctx.User, userLogin))
-                    return user != null ? Results.Ok(user) : Results.NotFound();
-                else
-                    return Results.StatusCode(403);
+                return user != null ? Results.Ok(user) : Results.NotFound();
             });
 
-            app.MapGet("api/userData/heroes/{userLogin}", async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository usersRepo, IHeroRepository heroesRepo) =>
+            app.MapGet("api/userData/heroes/{userLogin}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository usersRepo, IHeroRepository heroesRepo) =>
             {
                 User? user = await usersRepo.GetByLogin(userLogin);
-                if (AuthenticateUserRequest(ctx.User, userLogin))
-                    return user != null ? Results.Ok(user.OwnedHeroes.Select(h => new HeroResponceData(heroesRepo, h))) : Results.NotFound();
-                else
-                    return Results.StatusCode(403);
+                return user != null ? Results.Ok(user.OwnedHeroes.Select(h => new HeroResponceData(heroesRepo, h))) : Results.NotFound();
             });
 
             app.MapGet("api/userData/heroes", async (HttpContext ctx, IHeroRepository heroesRepo) =>
@@ -210,13 +196,10 @@ namespace app
                 return Results.Ok(heroes.Select(h => new HeroResponceData(h)));
             });
 
-            app.MapGet("api/userData/items/{userLogin}", async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository usersRepo, IShopItemRepository itemsRepo) =>
+            app.MapGet("api/userData/items/{userLogin}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] string userLogin, IUserRepository usersRepo, IShopItemRepository itemsRepo) =>
             {
                 User? user = await usersRepo.GetByLogin(userLogin);
-                if (AuthenticateUserRequest(ctx.User, userLogin))
-                    return Results.Ok(user.OwnedItems.Select(item => new ItemResponceData(itemsRepo, item)));
-                else
-                    return Results.StatusCode(403);
+                return Results.Ok(user.OwnedItems.Select(item => new ItemResponceData(itemsRepo, item)));
             });
 
             app.MapGet("api/userData/items/", async (HttpContext ctx, IUserRepository usersRepo, IShopItemRepository itemRepo) =>
@@ -238,12 +221,11 @@ namespace app
                 return Results.Ok();
             });
 
-            app.MapPost("api/heroesShop/randomContract", async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IHeroRepository heroRepo, IHeroInstanceRepository heroInstanceRepo) =>
+            app.MapPost("api/heroesShop/randomContract", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IHeroRepository heroRepo, IHeroInstanceRepository heroInstanceRepo) =>
             {
                 string login = userRequestData.Login;
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
-                if (!AuthenticateUserRequest(ctx.User, login)) return Results.StatusCode(403);
 
 
                 List<Hero> Heroes = (List<Hero>)await heroRepo.All();
@@ -260,12 +242,11 @@ namespace app
                 return Results.Json(new { hero.Id, hero.Name, heroClass = hero.Class.ToString() }, statusCode: 200);
             });
 
-            app.MapPost("api/shop/buyItem/{itemId}", async (HttpContext ctx, [FromRoute] int itemId, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IShopItemRepository shopItemsRepo, IInventoryRepository inventoryRepo) =>
+            app.MapPost("api/shop/buyItem/{itemId}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] int itemId, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IShopItemRepository shopItemsRepo, IInventoryRepository inventoryRepo) =>
             {
                 string login = userRequestData.Login;
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
-                if (!AuthenticateUserRequest(ctx.User, login)) return Results.StatusCode(403);
 
                 Item item = await shopItemsRepo.GetAsync(itemId);
                 if (item == null) return Results.Json(new { error = "Can't find item " + itemId}, statusCode: 400);
@@ -285,12 +266,11 @@ namespace app
                 return Results.Json(new { moneyLeft = user.Money, item.Name, item.Id }, statusCode: 200);
             });
 
-            app.MapPost("api/shop/buyAP", async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo) =>
+            app.MapPost("api/shop/buyAP", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo) =>
             {
                 string login = userRequestData.Login;
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
-                if (!AuthenticateUserRequest(ctx.User, login)) return Results.StatusCode(403);
 
                 if (await usersRepo.WithdrawMoney(user, 250))
                 {

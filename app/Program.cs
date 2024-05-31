@@ -3,6 +3,8 @@ using app.Repositories;
 using app.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using app.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +51,14 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy =>
         policy.RequireRole(new string[] { "Admin" })
     );
+    options.AddPolicy("OwnerOrAdmin", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new OwnerRequirement());
+    });
 });
+builder.Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHanlder>();
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();
@@ -58,6 +67,7 @@ builder.Services.AddScoped<IShopItemRepository, ShopItemRepository>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
 builder.Services.AddCors();
+
 
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<AppDbContext>(options =>
