@@ -17,7 +17,8 @@ namespace app.Authorization
                     return Task.CompletedTask;
                 }
 
-                var resourceOwner = httpContext.Request.RouteValues["userLogin"]?.ToString();
+                string resourceOwner = httpContext.Request.RouteValues["userLogin"]?.ToString();
+                resourceOwner = resourceOwner ?? httpContext.User.GetLogin();
                 if (resourceOwner == null)
                 {
                     return Task.CompletedTask;

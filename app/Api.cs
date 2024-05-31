@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using app.Utils;
 
 namespace app
 {
@@ -221,9 +222,9 @@ namespace app
                 return Results.Ok();
             });
 
-            app.MapPost("api/heroesShop/randomContract", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IHeroRepository heroRepo, IHeroInstanceRepository heroInstanceRepo) =>
+            app.MapPost("api/heroesShop/randomContract", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, IUserRepository usersRepo, IHeroRepository heroRepo, IHeroInstanceRepository heroInstanceRepo) =>
             {
-                string login = userRequestData.Login;
+                string login = ctx.User.GetLogin();
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
 
@@ -242,9 +243,9 @@ namespace app
                 return Results.Json(new { hero.Id, hero.Name, heroClass = hero.Class.ToString() }, statusCode: 200);
             });
 
-            app.MapPost("api/shop/buyItem/{itemId}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] int itemId, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo, IShopItemRepository shopItemsRepo, IInventoryRepository inventoryRepo) =>
+            app.MapPost("api/shop/buyItem/{itemId}", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromRoute] int itemId, IUserRepository usersRepo, IShopItemRepository shopItemsRepo, IInventoryRepository inventoryRepo) =>
             {
-                string login = userRequestData.Login;
+                string login = ctx.User.GetLogin();
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
 
@@ -266,9 +267,9 @@ namespace app
                 return Results.Json(new { moneyLeft = user.Money, item.Name, item.Id }, statusCode: 200);
             });
 
-            app.MapPost("api/shop/buyAP", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, [FromBody] UserRequestData userRequestData, IUserRepository usersRepo) =>
+            app.MapPost("api/shop/buyAP", [Authorize(Policy = "OwnerOrAdmin")] async (HttpContext ctx, IUserRepository usersRepo) =>
             {
-                string login = userRequestData.Login;
+                string login = ctx.User.GetLogin();
                 User? user = await usersRepo.GetByLogin(login);
                 if (user == null) return Results.Json(new { error = "Can't find user " + login }, statusCode: 400);
 
